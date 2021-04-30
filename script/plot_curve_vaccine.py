@@ -47,6 +47,9 @@ df_mhlw = pd.read_excel('data/vaccine_mhlw.xls',skiprows=[38],
 df_mhlw['date'] = pd.to_datetime(df_mhlw['date'])
 #print(df_mhlw)
 
+df_positive = pd.read_csv('data/pcr_positive_daily.csv',header=0,names=['date','positive'])
+df_positive['date'] = pd.to_datetime(df_positive['date'])
+
 ### Sum
 
 date_array = np.arange(np.datetime64(date_start),np.datetime64(date_end))
@@ -117,7 +120,7 @@ ax1.plot(df_korei['date'],df_korei['#1st']/normalization,'o-',
 	markersize=8,label='高齢者')
 #plt.yscale('log')
 ax1.set_xlim(date_start,date_end)
-ax1.set_xlabel('日付')
+ax1.set_xlabel('日付 (2021年)')
 ax1.set_ylabel('接種人数 (万人)',labelpad=20)
 myFmt = mdates.DateFormatter('%m/%d')
 ax1.xaxis.set_major_formatter(myFmt)
@@ -246,3 +249,57 @@ second_ay = ax1.secondary_yaxis('right',functions=(number2ratio_oku, ratio2numbe
 second_ay.set_ylabel('人口に占める割合 (%)')
 fig.savefig("fig/covid19_vaccine_accum_1st_prediction.pdf")
 fig.savefig("fig/covid19_vaccine_accum_1st_prediction.jpg",dpi=300)
+
+
+
+################
+# Accumulation 1st, Olympic
+################
+
+fig = plt.figure(figsize=(figsize_x,figsize_y),tight_layout=True)
+ax1 = fig.add_subplot(111)
+ax1.axvspan(pd.to_datetime('2021-07-23'),pd.to_datetime('2021-08-08'),
+	color="#3498DB",alpha=0.4)
+plt.text(pd.to_datetime('2021-08-01'),50,
+	'東京オリンピック',
+	color='b',ha='center', va='center',rotation='vertical')
+ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/total_population*100,
+	step="mid",color='#F08080',alpha=0.5)
+ax1.step(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/total_population*100,
+	'-',where='mid',markersize=0,label='合計(医療従事者+高齢者)',
+	color='r')
+#ax1.plot(df_korei['date'],np.add.accumulate(df_korei['#1st'])/normalization,'o-',
+#	markersize=8,label='高齢者')
+#plt.yscale('log')
+ax1.set_xlim(date_start,'2021-10-31')
+ax1.set_ylim(0,100)
+ax1.set_xlabel('日付 (2021年)')
+ax1.set_ylabel('１回目のワクチン接種をした人の総人口に対する割合 (%)',
+	color='r',labelpad=20)
+myFmt = mdates.DateFormatter('%m/%d')
+ax1.xaxis.set_major_formatter(myFmt)
+#ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2,
+#	title='１回目ワクチン接種者数\n (1日毎の積算値, %s時点)' % date.today())
+fig.patch.set_alpha(0.0)
+ax1.patch.set_alpha(0.0) 
+plt.axvline(pd.to_datetime('2021-10-21'), color='k', linestyle='--')
+plt.text(pd.to_datetime('2021-10-21'),50,
+	'衆議院議員選挙 (任期満了)', backgroundcolor='white',
+	ha='center', va='center',rotation='vertical')
+plt.axvline(pd.to_datetime('2021-07-22'), color='k', linestyle='--')
+plt.text(pd.to_datetime('2021-07-22'),50,
+	'東京都議会議員選挙 (任期満了)', backgroundcolor='white',
+	ha='center', va='center',rotation='vertical')
+#second_ay = ax1.secondary_yaxis('right',functions=(number2ratio_oku, ratio2number_oku))
+#second_ay.set_ylabel('人口に占める割合 (%)')
+
+ax2 = ax1.twinx()  
+ax2.set_ylabel('全国の新型コロナウイルス陽性者数 (人)',color='#7D3C98',labelpad=20)  # we already handled the x-label with ax1
+ax2.tick_params(axis='y',color='#7D3C98')
+ax2.step(df_positive['date'], df_positive['positive'],'o-',where='mid',
+	markersize=0,label='新型コロナウイルス陽性者(全国)',color='#7D3C98')
+#ax2.set_ylim(0,100.0)
+
+fig.savefig("fig/covid19_positive_vaccine_accum_1st_prediction.pdf")
+fig.savefig("fig/covid19_positive_vaccine_accum_1st_prediction.jpg",dpi=300)
+
