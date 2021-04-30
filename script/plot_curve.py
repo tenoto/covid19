@@ -62,7 +62,7 @@ ax1.axvspan(pd.to_datetime('2020-04-07'), pd.to_datetime('2020-05-25'),
 	color="gray", alpha=0.3)
 ax1.axvspan(pd.to_datetime('2021-01-08'), pd.to_datetime('2021-03-07'), 
 	color="gray", alpha=0.3)
-ax1.plot(date_ave, positive_ave,'-',linewidth=2)
+ax1.plot(date_ave, positive_ave,'-',linewidth=2,label='7-days running average')
 #ax1.step(df['date'], df['tested'],'o-',where='mid',markersize=0,
 #	label='Daily tested number')
 fig.savefig("fig/covid19_pcr_positive_daily_ave.pdf")
