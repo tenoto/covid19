@@ -359,7 +359,7 @@ fig.patch.set_alpha(0.0)
 ax1.patch.set_alpha(0.0) 
 
 ax2 = ax1.twinx()  
-ax2.set_ylabel('全国の新型コロナウイルス陽性者数 (人)',color='#7D3C98',labelpad=20)  # we already handled the x-label with ax1
+ax2.set_ylabel('１日毎の全国の新型コロナウイルス陽性者数 (人)',color='#7D3C98',labelpad=20)  # we already handled the x-label with ax1
 ax2.tick_params(axis='y',color='#7D3C98')
 ax2.step(df_positive['date'], df_positive['positive'],'o-',where='mid',
 	markersize=0,label='新型コロナウイルス陽性者(全国)',color='#7D3C98',
