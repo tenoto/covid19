@@ -17,6 +17,7 @@ date_start = '2021-02-15'
 date_end = date.today()
 date_of_end_of_emergency = '2021-05-11'
 normalization = 10000
+normalization_en = 1000000
 fit_width_days = 14
 prediction_month = 8 
 
@@ -222,6 +223,51 @@ second_ay = ax1.secondary_yaxis('right',functions=(number2ratio, ratio2number))
 second_ay.set_ylabel('人口に占める割合 (%)')
 fig.savefig("fig/covid19_vaccine_accum.pdf")
 fig.savefig("fig/covid19_vaccine_accum.jpg",dpi=300)
+
+# ======== English 
+
+
+def number2ratio_en(x):
+    return x * normalization_en / total_population * 100.0
+
+def ratio2number_en(x):
+    return x / normalization_en / 100 * total_population
+
+
+zorder = 0 
+fig = plt.figure(figsize=(figsize_x,figsize_y),tight_layout=True)
+ax1 = fig.add_subplot(111)
+ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/normalization_en,
+	step="mid",color='#F08080',alpha=0.5,label='Number of people vaccinated (1st)',zorder=zorder);zorder+=1
+ax1.step(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/normalization_en,
+	'-',where='mid',markersize=0,color='r',zorder=zorder);zorder+=1
+#ax1.plot(df_korei['date'],np.add.accumulate(df_korei['#1st'])/normalization_en,'o-',
+#	markersize=8,label='高齢者')
+#plt.yscale('log')
+ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/normalization_en,
+	step="mid",color='#85C1E9',alpha=0.5,label='Number of people vaccinated (2nd)',zorder=zorder);zorder+=1
+ax1.step(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/normalization_en,
+	'-',where='mid',markersize=0,color='b',zorder=zorder);zorder+=1
+ax1.plot(prediction_date,
+	prediction_shots/100,linestyle="--",color='k',zorder=zorder,
+	label='Linear extrapolation from the last %d days (+%.3f million/day)' % (fit_width_days,pol1_fit_param[0]/100.0));
+zorder+=1
+ax1.set_xlim(date_start,date_end)
+ax1.set_ylim(0,1.2*max(np.add.accumulate(num1st_array)/normalization_en))
+ax1.set_xlabel('Date (Year 2021)')
+ax1.set_ylabel('Accumulated number vaccinated in Japan (million people)',labelpad=20)
+myFmt = mdates.DateFormatter('%m/%d')
+ax1.xaxis.set_major_formatter(myFmt)
+ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=1,
+	title='Compiled from the Japanese government websites \n (Daily, as of %s)' % date.today())
+fig.patch.set_alpha(0.0)
+ax1.patch.set_alpha(0.0) 
+#plt.gca().set_ylim(bottom=0)
+second_ay = ax1.secondary_yaxis('right',functions=(number2ratio_en, ratio2number_en))
+second_ay.set_ylabel('Percentage of population (%)')
+fig.savefig("fig/covid19_vaccine_accum_en.pdf")
+fig.savefig("fig/covid19_vaccine_accum_en.jpg",dpi=300)
+
 
 
 """
