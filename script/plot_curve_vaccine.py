@@ -208,6 +208,17 @@ ax1.plot(prediction_date,
 	prediction_shots,linestyle="--",color='k',zorder=zorder,
 	label='直近 %d 日間の１次フィット (+%.1f 万人/日)' % (fit_width_days,pol1_fit_param[0]));
 zorder+=1
+
+# ====
+plt.axvline(pd.to_datetime('2021-04-29'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.axvline(pd.to_datetime('2021-05-09'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-04-29')+pd.DateOffset(3),50,
+	'ゴールデンウィーク', #backgroundcolor='white',
+	ha='center', va='center',rotation='vertical',fontsize=15,
+	zorder=zorder);zorder+=1
+
 ax1.set_xlim(date_start,date_end)
 ax1.set_ylim(0,1.2*max(np.add.accumulate(num1st_array)/normalization))
 ax1.set_xlabel('日付 (2021年)')
@@ -252,6 +263,16 @@ ax1.plot(prediction_date,
 	prediction_shots/100,linestyle="--",color='k',zorder=zorder,
 	label='Linear extrapolation from the last %d days (+%.3f million/day)' % (fit_width_days,pol1_fit_param[0]/100.0));
 zorder+=1
+# ====
+plt.axvline(pd.to_datetime('2021-04-29'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.axvline(pd.to_datetime('2021-05-09'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-04-29')+pd.DateOffset(3),0.5,
+	'Holidays', #backgroundcolor='white',
+	ha='center', va='center',rotation='vertical',fontsize=15,
+	zorder=zorder);zorder+=1
+
 ax1.set_xlim(date_start,date_end)
 ax1.set_ylim(0,1.2*max(np.add.accumulate(num1st_array)/normalization_en))
 ax1.set_xlabel('Date (Year 2021)')
@@ -352,6 +373,12 @@ plt.text(pd.to_datetime('2021-08-01'),50,
 	'東京オリンピック',color='k',ha='center', 
 	va='center',rotation='vertical',zorder=zorder);zorder+=1
 # ====
+ax1.axvspan(pd.to_datetime('2021-08-24'),pd.to_datetime('2021-09-05'),
+	color="#AED6F1",zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-08-30'),50,
+	'東京パラリンピック',color='k',ha='center', 
+	va='center',rotation='vertical',zorder=zorder);zorder+=1
+# ====
 plt.axvline(pd.to_datetime('2021-10-21'), 
 	color='k', linestyle='--',zorder=zorder);zorder+=1
 plt.text(pd.to_datetime('2021-10-21')-pd.DateOffset(4),50,
@@ -373,6 +400,15 @@ plt.text(pd.to_datetime('2021-06-25')-pd.DateOffset(4),50,
 	ha='center', va='center',rotation='vertical',fontsize=15,
 	zorder=zorder);zorder+=1
 # ====
+plt.axvline(pd.to_datetime('2021-04-29'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.axvline(pd.to_datetime('2021-05-09'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-04-29')+pd.DateOffset(5),20,
+	'ゴールデンウィーク', #backgroundcolor='white',
+	ha='center', va='center',rotation='vertical',fontsize=15,
+	zorder=zorder);zorder+=1
+
 
 ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/total_population*100,
 	step="mid",color='#F08080',alpha=0.5,label='１回目の接種人数',
