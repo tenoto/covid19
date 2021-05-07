@@ -15,7 +15,7 @@ figsize_y = 9
 date_start = '2021-02-15'
 #date_end = '2021-04-29'
 date_end = date.today()
-date_of_end_of_emergency = '2021-05-11'
+date_of_end_of_emergency = '2021-05-31'
 normalization = 10000
 normalization_en = 1000000
 fit_width_days = 14
@@ -163,6 +163,45 @@ ax1.patch.set_alpha(0.0)
 plt.gca().set_ylim(bottom=0)
 fig.savefig("fig/covid19_vaccine_daily_2nd.pdf")
 fig.savefig("fig/covid19_vaccine_daily_2nd.jpg",dpi=300)
+
+
+#fig = plt.figure(figsize=(figsize_x,2*figsize_y),tight_layout=True)
+fig, axs = plt.subplots(2,1,sharex=True,figsize=(9,10),tight_layout=True)
+fig.subplots_adjust(hspace=0.01)
+
+axs[0].fill_between(pd.to_datetime(date_array),num1st_array/normalization,
+	step="mid",color='#F08080',alpha=0.5)
+axs[0].step(pd.to_datetime(date_array),num1st_array/normalization,
+	'-',where='mid',markersize=0,label='１回目ワクチン接種者数',
+	color='r')
+axs[0].axhline(100.0,color='k', linestyle='--')
+axs[0].set_xlim(date_start,date_end)
+axs[0].set_ylim(0.0,130)
+axs[0].set_ylabel('1日ごとの接種人数 (万人)',labelpad=20)
+axs[0].legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2,
+	title='首相官邸サイトの表から作成\n(1日毎, %s時点)' % date.today())
+fig.patch.set_alpha(0.0)
+axs[0].patch.set_alpha(0.0) 
+
+axs[1].fill_between(pd.to_datetime(date_array),num2nd_array/normalization,
+	step="mid",color='#85C1E9',alpha=0.5)
+axs[1].step(pd.to_datetime(date_array),num2nd_array/normalization,
+	'-',where='mid',markersize=0,label='２回目ワクチン接種者数',
+	color='b')
+axs[1].axhline(100.0,color='k', linestyle='--')
+axs[1].set_xlim(date_start,date_end)
+axs[1].set_ylim(0.0,130)
+axs[1].set_xlabel('日付 (2021年)')
+axs[1].set_ylabel('1日ごとの接種人数 (万人)',labelpad=20)
+myFmt = mdates.DateFormatter('%m/%d')
+axs[1].xaxis.set_major_formatter(myFmt)
+axs[1].set_ylim(0.0,130)
+axs[1].legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2)	
+fig.patch.set_alpha(0.0)
+axs[1].patch.set_alpha(0.0) 
+plt.gca().set_ylim(bottom=0)
+fig.savefig("fig/covid19_vaccine_daily.pdf")
+fig.savefig("fig/covid19_vaccine_daily.jpg",dpi=300)
 
 ################
 # fit accumulation pace
