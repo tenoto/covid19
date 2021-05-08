@@ -408,13 +408,13 @@ ax1.axvspan(pd.to_datetime('2021-01-08'),pd.to_datetime('2021-03-21'),
 # ====
 ax1.axvspan(pd.to_datetime('2021-07-23'),pd.to_datetime('2021-08-08'),
 	color="#AED6F1",zorder=zorder);zorder+=1
-plt.text(pd.to_datetime('2021-08-01'),50,
+plt.text(pd.to_datetime('2021-08-01'),60,
 	'東京オリンピック',color='k',ha='center', 
 	va='center',rotation='vertical',zorder=zorder);zorder+=1
 # ====
 ax1.axvspan(pd.to_datetime('2021-08-24'),pd.to_datetime('2021-09-05'),
 	color="#AED6F1",zorder=zorder);zorder+=1
-plt.text(pd.to_datetime('2021-08-30'),50,
+plt.text(pd.to_datetime('2021-08-30'),60,
 	'東京パラリンピック',color='k',ha='center', 
 	va='center',rotation='vertical',zorder=zorder);zorder+=1
 # ====
@@ -469,6 +469,46 @@ ax1.plot(prediction_date,
 	linestyle="--",color='r',zorder=zorder,
 	label='直近 %d 日間からの予測 (+%.1f 万人/日)\nこのペースでは全国民接種まで %d 日必要' % (fit_width_days,pol1_fit_param[0],expected_days))
 zorder+=1
+ax1.plot(
+	[pd.to_datetime('2021-07-28'),pd.to_datetime('2021-08-03')],
+	[3600*1e+4/total_population*100,3600*1e+4/total_population*100],
+	'-',color='k',linewidth=3,zorder=zorder)
+ax1.arrow(
+	pd.to_datetime('2021-07-31'),
+	3600*1e+4/total_population*100,
+	0.0,
+	400*1e+4/total_population*100,
+	fc='#000000',ec='#000000',
+	head_width=1.5,head_length=1.0,linewidth=3,
+	zorder=zorder)
+plt.text(pd.to_datetime('2021-07-28'),
+	3200*1e+4/total_population*100,
+	'7月末 3600万人(高齢者)\n接種完了目標',
+	color='k',ha='center', fontsize=12,
+	va='center',zorder=zorder);zorder+=1
+ax1.plot(
+	[pd.to_datetime('2021-05-10'),pd.to_datetime('2021-06-30')],
+	[2800*1e+4/total_population*100,2800*1e+4/total_population*100],
+	'-',color='k',linewidth=3,zorder=zorder)
+plt.text(pd.to_datetime('2021-05-30'),
+	3000*1e+4/total_population*100,
+	'日本到着済?(2800万回分)',
+	color='k',ha='center', fontsize=12,
+	va='center',zorder=zorder);zorder+=1
+zorder+=1
+
+for key in [400,4000,8000]:
+	ax1.plot(
+		[pd.to_datetime(date_start),
+		pd.to_datetime(date_start)+pd.DateOffset(10)],
+		[key*1e+4/total_population*100,key*1e+4/total_population*100],
+		'-',color='k',linewidth=3,zorder=zorder)
+	plt.text(pd.to_datetime(date_start)+pd.DateOffset(19),
+		key*1e+4/total_population*100,
+		'%d万人' % key,
+		color='k',ha='center', fontsize=12,
+		va='center',zorder=zorder);zorder+=1
+
 ax1.yaxis.label.set_color('red')
 ax1.set_xlim(date_start,'2021-10-31')
 ax1.set_ylim(0,100)
