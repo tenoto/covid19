@@ -94,6 +94,8 @@ for i in range(len(date_array)):
 		num2nd_array[i] = num2nd_array[i] + int(df_korei['#2nd'][flag_korei])
 		numtot_array[i] = numtot_array[i] + int(df_korei['#2nd'][flag_korei])		
 
+latest = df_iryo['date'][0]
+latest_date = '%s-%s-%s' % (latest.year, latest.month, latest.day)
 
 ### Plot data
 
@@ -129,7 +131,7 @@ ax1.set_ylabel('接種人数 (万人)',labelpad=20)
 myFmt = mdates.DateFormatter('%m/%d')
 ax1.xaxis.set_major_formatter(myFmt)
 ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2,
-	title='１回目ワクチン接種者数\n (1日毎, %s時点)' % date.today())
+	title='１回目ワクチン接種者数\n (1日毎, %sまで)' % latest_date)
 fig.patch.set_alpha(0.0)
 ax1.patch.set_alpha(0.0) 
 plt.gca().set_ylim(bottom=0)
@@ -157,7 +159,7 @@ ax1.set_ylabel('接種人数 (万人)',labelpad=20)
 myFmt = mdates.DateFormatter('%m/%d')
 ax1.xaxis.set_major_formatter(myFmt)
 ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2,
-	title='２回目ワクチン接種者数\n (1日毎, %s時点)' % date.today())
+	title='２回目ワクチン接種者数\n (1日毎, %sまで)' % latest_date)
 fig.patch.set_alpha(0.0)
 ax1.patch.set_alpha(0.0) 
 plt.gca().set_ylim(bottom=0)
@@ -179,7 +181,7 @@ axs[0].set_xlim(date_start,date_end)
 axs[0].set_ylim(0.0,130)
 axs[0].set_ylabel('1日ごとの接種人数 (万人)',labelpad=20)
 axs[0].legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=2,
-	title='首相官邸サイトの表から作成\n(1日毎, %s時点)' % date.today())
+	title='首相官邸サイトの表から作成\n(1日毎, %sまで)' % latest_date)
 fig.patch.set_alpha(0.0)
 axs[0].patch.set_alpha(0.0) 
 
@@ -265,7 +267,7 @@ ax1.set_ylabel('積算のワクチン接種人数 (万人)',labelpad=20)
 myFmt = mdates.DateFormatter('%m/%d')
 ax1.xaxis.set_major_formatter(myFmt)
 ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=1,
-	title='首相官邸・厚生労働省のサイトから作成\n (1日毎の積算値, %s時点)' % date.today())
+	title='首相官邸・厚生労働省のサイトから作成\n (1日毎の積算値, %sまで)' % latest_date)
 fig.patch.set_alpha(0.0)
 ax1.patch.set_alpha(0.0) 
 #plt.gca().set_ylim(bottom=0)
@@ -319,7 +321,7 @@ ax1.set_ylabel('Accumulated number vaccinated in Japan (million people)',labelpa
 myFmt = mdates.DateFormatter('%m/%d')
 ax1.xaxis.set_major_formatter(myFmt)
 ax1.legend(loc='upper left',borderaxespad=1,fontsize=20,ncol=1,
-	title='Compiled from the Japanese government websites \n (Daily, as of %s)' % date.today())
+	title='Compiled from the Japanese government websites \n (Daily, as of %s)' % latest_date)
 fig.patch.set_alpha(0.0)
 ax1.patch.set_alpha(0.0) 
 #plt.gca().set_ylim(bottom=0)
@@ -530,7 +532,7 @@ ax2.set_ylim(0,1.3*max(df_positive['positive']))
 
 
 ax1.legend(loc='upper left',borderaxespad=1,fontsize=18,ncol=1,
-	title='首相官邸サイトから作成 (%s時点)' % date.today()).set_zorder(zorder)
+	title='首相官邸サイトから作成 (%sまで)' % latest_date).set_zorder(zorder)
 
 fig.savefig("fig/covid19_positive_vaccine_accum_long.pdf")
 fig.savefig("fig/covid19_positive_vaccine_accum_long.jpg",dpi=300)
