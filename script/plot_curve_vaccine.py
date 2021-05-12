@@ -250,6 +250,9 @@ ax1.plot(prediction_date,
 	label='直近 %d 日間の１次フィット (+%.1f 万人/日)' % (fit_width_days,pol1_fit_param[0]));
 zorder+=1
 
+#print(pol1_fit_param)
+#exit()
+
 # ====
 plt.axvline(pd.to_datetime('2021-04-29'), 
 	color='k', linestyle='--',zorder=zorder);zorder+=1
@@ -300,9 +303,9 @@ ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/norm
 	step="mid",color='#85C1E9',alpha=0.5,label='Number of people vaccinated (2nd)',zorder=zorder);zorder+=1
 ax1.step(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/normalization_en,
 	'-',where='mid',markersize=0,color='b',zorder=zorder);zorder+=1
-ax1.plot(prediction_date,
-	prediction_shots/100,linestyle="--",color='k',zorder=zorder,
-	label='Linear extrapolation from the last %d days (+%.3f million/day)' % (fit_width_days,pol1_fit_param[0]/100.0));
+#ax1.plot(prediction_date,
+#	prediction_shots/100,linestyle="--",color='k',zorder=zorder)	
+#	label='Linear extrapolation from the last %d days (+%.3f million/day)' % (fit_width_days,pol1_fit_param[0]/100.0));
 zorder+=1
 # ====
 plt.axvline(pd.to_datetime('2021-04-29'), 
@@ -468,8 +471,8 @@ expected_days = (total_population-np.add.accumulate(num1st_array)[-1])/(pol1_fit
 
 ax1.plot(prediction_date,
 	prediction_shots*normalization/total_population*100,
-	linestyle="--",color='r',zorder=zorder,
-	label='直近 %d 日間からの予測 (+%.1f 万人/日)\nこのペースでは全国民接種まで %d 日必要' % (fit_width_days,pol1_fit_param[0],expected_days))
+	linestyle="--",color='r',zorder=zorder)
+#	label='直近 %d 日間からの予測 (+%.1f 万人/日)\nこのペースでは全国民接種まで %d 日必要' % (fit_width_days,pol1_fit_param[0],expected_days))
 zorder+=1
 ax1.plot(
 	[pd.to_datetime('2021-07-28'),pd.to_datetime('2021-08-03')],
@@ -536,4 +539,160 @@ ax1.legend(loc='upper left',borderaxespad=1,fontsize=18,ncol=1,
 
 fig.savefig("fig/covid19_positive_vaccine_accum_long.pdf")
 fig.savefig("fig/covid19_positive_vaccine_accum_long.jpg",dpi=300)
+
+
+
+
+
+
+
+################
+# Accumulation 1st, Olympic / English
+################
+
+fig = plt.figure(figsize=(figsize_x,figsize_y),tight_layout=True)
+ax1 = fig.add_subplot(111)
+
+zorder = 0
+for i in range(1,12):
+	plt.axvline(pd.to_datetime('2021-%02d-01' % i), 
+		color='#E5E7E9',linestyle='-.',zorder=zorder)
+	zorder += 1
+
+ax1.axvspan(pd.to_datetime('2021-04-25'),pd.to_datetime(date_of_end_of_emergency),
+	color="#FCF3CF",zorder=zorder,label='Declaration of Emergency (until %s)' % date_of_end_of_emergency);zorder+=1
+ax1.axvspan(pd.to_datetime('2021-01-08'),pd.to_datetime('2021-03-21'),
+	color="#FCF3CF",zorder=zorder);zorder+=1
+#plt.text(pd.to_datetime('2021-05-01'),50,
+#	'緊急事態宣言',color='k',ha='center', 
+#	va='center',rotation='vertical',zorder=zorder);zorder+=1
+# ====
+ax1.axvspan(pd.to_datetime('2021-07-23'),pd.to_datetime('2021-08-08'),
+	color="#AED6F1",zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-08-01'),60,
+	'Tokyo Olympics',color='k',ha='center', 
+	va='center',rotation='vertical',zorder=zorder);zorder+=1
+# ====
+ax1.axvspan(pd.to_datetime('2021-08-24'),pd.to_datetime('2021-09-05'),
+	color="#AED6F1",zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-08-30'),60,
+	'Tokyo Paralympics',color='k',ha='center', 
+	va='center',rotation='vertical',zorder=zorder);zorder+=1
+# ====
+plt.axvline(pd.to_datetime('2021-10-21'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-10-21')-pd.DateOffset(4),50,
+	'the Lower House election (full-term)', backgroundcolor='white',fontsize=15,
+	ha='center', va='center',
+	rotation='vertical',zorder=zorder);zorder+=1
+# ====
+plt.axvline(pd.to_datetime('2021-07-04'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-07-04')+pd.DateOffset(4),50,
+	'metropolitan assembly election', backgroundcolor='white',
+	ha='center', va='center',rotation='vertical',fontsize=15,
+	zorder=zorder);zorder+=1
+# ====
+# plt.axvline(pd.to_datetime('2021-06-25'), 
+#	color='k', linestyle='--',zorder=zorder);zorder+=1
+#plt.text(pd.to_datetime('2021-06-25')-pd.DateOffset(4),50,
+#	'都議会選挙 (告示日)', backgroundcolor='white',
+#	ha='center', va='center',rotation='vertical',fontsize=15,
+#	zorder=zorder);zorder+=1
+# ====
+plt.axvline(pd.to_datetime('2021-04-29'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.axvline(pd.to_datetime('2021-05-09'), 
+	color='k', linestyle='--',zorder=zorder);zorder+=1
+plt.text(pd.to_datetime('2021-04-29')+pd.DateOffset(5),20,
+	'holiday-studded week', #backgroundcolor='white',
+	ha='center', va='center',rotation='vertical',fontsize=15,
+	zorder=zorder);zorder+=1
+
+ax1.set_title('Status of covid-19 vaccination in Japan (as of %s)'  % latest_date)
+ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/total_population*100,
+	step="mid",color='#F08080',alpha=0.5,label='Number of people vaccinated (1st)',
+	zorder=zorder);zorder+=1
+ax1.step(pd.to_datetime(date_array),np.add.accumulate(num1st_array)/total_population*100,
+	'-',where='mid',markersize=0,
+	color='r',linewidth=2,zorder=zorder);zorder+=1
+ax1.fill_between(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/total_population*100,
+	step="mid",color='#85C1E9',alpha=0.5,label='Number of people vaccinated (2nd)',
+	zorder=zorder);zorder+=1
+ax1.step(pd.to_datetime(date_array),np.add.accumulate(num2nd_array)/total_population*100,
+	'-',where='mid',markersize=0,
+	color='b',linewidth=2,zorder=zorder);zorder+=1
+
+expected_days = (total_population-np.add.accumulate(num1st_array)[-1])/(pol1_fit_param[0]*normalization)
+
+ax1.plot(prediction_date,
+	prediction_shots*normalization/total_population*100,
+	linestyle="--",color='r',zorder=zorder)
+#	label='直近 %d 日間からの予測 (+%.1f 万人/日)\nこのペースでは全国民接種まで %d 日必要' % (fit_width_days,pol1_fit_param[0],expected_days))
+zorder+=1
+ax1.plot(
+	[pd.to_datetime('2021-07-28'),pd.to_datetime('2021-08-03')],
+	[3600*1e+4/total_population*100,3600*1e+4/total_population*100],
+	'-',color='k',linewidth=3,zorder=zorder)
+ax1.arrow(
+	pd.to_datetime('2021-07-31'),
+	3600*1e+4/total_population*100,
+	0.0,
+	400*1e+4/total_population*100,
+	fc='#000000',ec='#000000',
+	head_width=1.5,head_length=1.0,linewidth=3,
+	zorder=zorder)
+plt.text(pd.to_datetime('2021-07-28'),
+	3200*1e+4/total_population*100,
+	'Government objective\n (end of July, 36 million)',
+	color='k',ha='center', fontsize=12,
+	va='center',zorder=zorder);zorder+=1
+#ax1.plot(
+#	[pd.to_datetime('2021-05-10'),pd.to_datetime('2021-06-30')],
+#	[2800*1e+4/total_population*100,2800*1e+4/total_population*100],
+#	'-',color='k',linewidth=3,zorder=zorder)
+#plt.text(pd.to_datetime('2021-05-30'),
+#	3000*1e+4/total_population*100,
+#	'日本到着済?(2800万回分)',
+#	color='k',ha='center', fontsize=12,
+#	va='center',zorder=zorder);zorder+=1
+zorder+=1
+
+for key in [400,4000,8000]:
+	ax1.plot(
+		[pd.to_datetime(date_start),
+		pd.to_datetime(date_start)+pd.DateOffset(10)],
+		[key*1e+4/total_population*100,key*1e+4/total_population*100],
+		'-',color='k',linewidth=3,zorder=zorder)
+	plt.text(pd.to_datetime(date_start)+pd.DateOffset(20),
+		key*1e+4/total_population*100,
+		'%d million' % (key/100),
+		color='k',ha='center', fontsize=12,
+		va='center',zorder=zorder);zorder+=1
+
+ax1.yaxis.label.set_color('red')
+ax1.set_xlim(date_start,'2021-10-31')
+ax1.set_ylim(0,100)
+ax1.set_xlabel('Day (Year 2021)')
+ax1.set_ylabel('Ratio of the accumulated number of people vaccinated \nto the total population of Japan (%)',color='k',labelpad=20)
+myFmt = mdates.DateFormatter('%m/%d')
+ax1.xaxis.set_major_formatter(myFmt)
+fig.patch.set_alpha(0.0)
+ax1.patch.set_alpha(0.0) 
+
+ax2 = ax1.twinx()  
+ax2.set_ylabel('Number of new coronavirus positive cases per day in Japan',color='#7D3C98',labelpad=20)  # we already handled the x-label with ax1
+ax2.tick_params(axis='y',color='#7D3C98')
+ax2.step(df_positive['date'], df_positive['positive'],'o-',where='mid',
+	markersize=0,color='#7D3C98',
+	linewidth=2)
+ax2.set_ylim(0,1.3*max(df_positive['positive']))
+#ax2.set_zorder(-1)
+
+
+ax1.legend(loc='upper left',borderaxespad=1,fontsize=18,ncol=1,
+	title='Data from the Japanese govenment website').set_zorder(zorder)
+
+fig.savefig("fig/covid19_positive_vaccine_accum_long_en.pdf")
+fig.savefig("fig/covid19_positive_vaccine_accum_long_en.jpg",dpi=300)
 
